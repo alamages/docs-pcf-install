@@ -21,7 +21,7 @@ This section describes how a Small Footprint Elastic Runtime deployment differs 
 
 ### <a id='compare'></a>VM Comparison
 
-A standard, highly available Elastic Runtime deployment has 31 VMs and  requires [50 or more instances](https://docs.pivotal.io/pivotalcf/1-12/customizing/aws.html#aws). Some resource-constrained environments that run smaller workloads can benefit from an Elastic Runtime deployment with a minimal footprint. The Small Footprint Elastic Runtime tile condenses the required jobs onto only four VMs. 
+A standard, highly available Elastic Runtime deployment has 31 VMs and  requires [50 or more instances](https://docs.pivotal.io/pivotalcf/1-12/customizing/aws.html#aws). Some resource-constrained environments that run smaller workloads can benefit from an Elastic Runtime deployment with a minimal footprint. The Small Footprint Elastic Runtime tile requires only four VMs. 
 
 The following image compares the number of VMs deployed by Elastic Runtime and Small Footprint Elastic Runtime. 
 
@@ -33,7 +33,7 @@ The Small Footprint Elastic Runtime tile satisfies the following use cases:
 
 * **Small on-premise installations**: You want to run PCF in a small data center or other resource-constrained environment.
 * **Proof-of-concept installations**: You want to deploy PCF quickly and with a small footprint for evaluation or testing purposes. 
-* **Service tile R&D**: You develop a service tile for PCF and you want to test it against Small Footprint Elastic Runtime instead of a standard Elastic Runtime deployment. 
+* **Service tile R&D**: You develop a service tile for PCF and you want to test it against Small Footprint Elastic Runtime instead of a standard Elastic Runtime deployment to reduce cost. 
 
 The Small Footprint Elastic Runtime tile is not recommended for most production deployments. The tile has significant performance and capacity restraints. A standard Elastic Runtime deployment is better equipped to handle production workloads and scale to meet your needs. 
 
@@ -45,13 +45,13 @@ You can deploy the Small Footprint Elastic Runtime tile with a minimum of four V
 
 ![SRT VMS](srt-vms.png)
 
-To reduce the amount of VMs necessary for Small Footprint Elastic Runtime, the _Control_ and _Database_ VMs include co-located jobs that normally run on a single VM in Elastic Runtime. See the next sections for details. 
+To reduce the number of VMs required for Small Footprint Elastic Runtime, the _Control_ and _Database_ VMs include co-located jobs that normally run on a single VM in Elastic Runtime. See the next sections for details. 
 
 For more information about the components mentioned on this page, see the _Architecture_ section of the [Elastic Runtime Concepts](https://docs.pivotal.io/pivotalcf/concepts/index.html) guide. 
 
 ### <a id='controlvm'></a>Control VM
 
-The Control VM includes the Elastic Runtime jobs that handle management plane operations, app lifecycles, logging, and user authorization and authentication. Additionally, all errands run on the Control VM, which eliminates the need to spin up a VM for each errand and significantly reduces the amount of time it takes to run errands.  
+The Control VM includes the Elastic Runtime jobs that handle management plane operations, app lifecycles, logging, and user authorization and authentication. Additionally, all errands run on the Control VM, eliminating the the need for a VM for each errand and significantly reducing the time it takes to run errands. 
 
 The following image shows all the jobs from Elastic Runtime that are co-located on the Control VM in Small Footprint Elastic Runtime. 
 
