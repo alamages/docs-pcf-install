@@ -2,26 +2,18 @@
 title: Small Footprint Elastic Runtime
 owner: releng
 ---
-<style>
-    .note.warning {
-        background-color: #fdd;
-        border-color: #fbb
-    }
-
-    .note.warning:before {
-        color: #f99;
-     }
-</style>
 
 This documentation describes the Small Footprint Elastic Runtime tile for Pivotal Cloud Foundry (PCF). 
 
 ## <a id='intro'></a>Introduction
 
-This section describes how a Small Footprint Elastic Runtime deployment differs from a standard deployment. 
+This section describes how a Small Footprint Elastic Runtime deployment differs from a standard deployment, as well as use cases and limitations.
 
-### <a id='compare'></a>VM Comparison
+<p class="note warning"><strong>WARNING</strong>: The Small Footprint Elastic Runtime tile is not recommended for most production deployments. The tile has significant performance and capacity restraints. A standard Elastic Runtime deployment handles production workloads and scale to meet your needs. See <a href="#limits">Limitations</a>.</p>
 
-A standard, highly available Elastic Runtime deployment can have up to 31 VMs and [50 or more instances](https://docs.pivotal.io/pivotalcf/1-12/customizing/aws.html#aws) total. Some resource-constrained environments that run smaller workloads can benefit from an Elastic Runtime deployment with a minimal footprint. The Small Footprint Elastic Runtime tile requires only four VMs. 
+### <a id='compare'></a>Elastic Runtime vs. Small Footprint Elastic Runtime
+
+The Small Footprint Elastic Runtime is a repackaging of the Elastic Runtime components into a smaller and more efficient deployment. A standard Elastic Runtime deployment must have at least 24 VMs, whereas the Small Footprint Elastic Runtime only requires four.   
 
 The following image compares the number of VMs deployed by Elastic Runtime and Small Footprint Elastic Runtime. 
 
@@ -31,11 +23,26 @@ The following image compares the number of VMs deployed by Elastic Runtime and S
 
 The Small Footprint Elastic Runtime tile satisfies the following use cases:
 
-* **Small on-premise installations**: You want to run PCF in a small data center or other resource-constrained environment.
-* **Proof-of-concept installations**: You want to deploy PCF quickly and with a small footprint for evaluation or testing purposes. 
-* **Service tile R&D**: You develop a service tile for PCF and you want to test it against Small Footprint Elastic Runtime instead of a standard Elastic Runtime deployment to reduce cost. 
+* **Small on-premise installations**: 
+	* Run PCF in a small, on-site data center such as at a warehouse, retail store, hospital, or factory.
+* **Proof-of-concept installations**: 
+	* Deploy PCF quickly and with a small footprint for evaluation or testing purposes. 
+* **Service tile R&D**: 
+	* Test a service tile against Small Footprint Elastic Runtime instead of a standard Elastic Runtime deployment to increase efficiency and reduce cost.  
 
-The Small Footprint Elastic Runtime tile is not recommended for most production deployments. The tile has significant performance and capacity restraints. A standard Elastic Runtime deployment is better equipped to handle production workloads and scale to meet your needs. 
+### <a id='limits'></a>Limitations
+
+The Small Footprint Elastic Runtime tile has the following limitations:
+
+* **Number of app instances**: 
+	* The tile is not designed to support large numbers of app instances. You cannot scale the number of [Compute VMs](compute) beyond `10` instances in the **Resource Config** pane.
+* **Increasing platform capacity**: 
+	* The Small Footprint Elastic Runtime tile cannot upgrade to the standard Elastic Runtime tile. If you expect platform usage to increase beyond the capacity of the Small Footprint Elastic Runtime tile, consider using the standard Elastic Runtime tile.
+* **Management plane availability during tile upgrades**
+	* You may not be able to perform management plane operations for brief periods during tile upgrades, which includes deploying new apps and accessing APIs. This is because much the management plane is colocated on the [Control VM](#controlvm). 
+* **App availability during tile upgrades**:
+	* If you require availability during your upgrades, you must scale your **Compute VMs** to a highly available configuration. Ensure there is enough excess capacity to move app instances between Compute VM instances during the upgrade. 
+
 
 ## <a id='arch'></a>Architecture
 
@@ -83,7 +90,7 @@ To install the Small Footprint Elastic Runtime tile, follow the instructions for
 
 The installation and configuration is mostly the same as that of the Elastic Runtime tile, with the following differences:
 
-* **Selecting a product in Pivotal Network**: When you navigate to the Elastic Runtime tile on [Pivotal Network](https://network.pivotal.io/products/elastic-runtime), select the **Small Footprint** release. 
+* **Selecting a product in Pivotal Network**: When you navigate to the Elastic Runtime tile on [Pivotal Network](https://network.pivotal.io/products/elastic-runtime), select the **Small Footprint** release. This release contains
 
 * **Securing communication between Diego and the Cloud Controller**: In the Small Footprint Elastic Runtime tile, these two components communicate securely by default. There is no selector to enable secure communication as there is in the Elastic Runtime tile. 
 
@@ -197,8 +204,6 @@ If you need to troubleshoot a job that runs on the Control or Database VMs, foll
 	cloud\_controller\_ng.log          cloud\_controller\_ng.log.4.gz  cloud\_controller\_worker\_ctl.err.log  post-start.stdout.log
 	cloud\_controller\_ng.log.1.gz     cloud\_controller\_ng.log.5.gz  cloud\_controller\_worker\_ctl.log      pre-start.stderr.log
 	</pre>
-
-## <a id='scaling'></a>Performance and Scaling
 
 ## <a id='rn'></a>Release Notes
 
