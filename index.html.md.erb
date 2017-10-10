@@ -11,7 +11,7 @@ Use Small Footprint Elastic Runtime for testing or small on-site data centers wh
 
 ## <a id='compare'></a>Differentiate Small Footprint Elastic Runtime and Elastic Runtime
 
-The Small Footprint Elastic Runtime is a repackaging of the Elastic Runtime components into a smaller and more efficient deployment. A standard Elastic Runtime deployment must have at least 24 virtual machines (VMs), but the Small Footprint Elastic Runtime only requires four.   
+The Small Footprint Elastic Runtime is a repackaging of the Elastic Runtime components into a smaller and more efficient deployment. A standard Elastic Runtime deployment must have at least 24 virtual machines (VMs), but the Small Footprint Elastic Runtime requires only four.   
 
 The following image displays a comparison of the number of VMs deployed by Elastic Runtime and Small Footprint Elastic Runtime. 
 
@@ -37,7 +37,7 @@ The Small Footprint Elastic Runtime tile has the following limitations:
 * **Increasing platform capacity**: 
 	* You cannot upgrade the Small Footprint Elastic Runtime tile to the standard Elastic Runtime tile. If you expect platform usage to increase beyond the capacity of the Small Footprint Elastic Runtime tile, Pivotal recommends using the standard Elastic Runtime tile.
 * **Management plane availability during tile upgrades**
-	* You may not be able to perform management plane operations for brief periods during tile upgrades, which includes deploying new apps and accessing APIs. The management plane is colocated on the [Control VM](#controlvm). 
+	* You may not be able to perform management plane operations like deploying new apps and accessing APIs for brief periods during tile upgrades. The management plane is colocated on the [Control VM](#controlvm). 
 * **App availability during tile upgrades**:
 	* If you require availability during your upgrades, you must scale your **Compute VMs** to a highly available configuration. Ensure sufficient capacity exists to move app instances between Compute VM instances during the upgrade. 
 
