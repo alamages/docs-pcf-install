@@ -9,6 +9,8 @@ _This topic assumes you are using [BOSH CLI v2](https://bosh.io/docs/cli-v2.html
 
 This topic describes the procedure for recovering a terminated Elastic Runtime cluster using a process known as bootstrapping.
 
+<p class="note"><strong>Note</strong>: By default, <code>mysql</code> clients are not allowed to connect as administrator to internal MySQL instances from remote hosts. Administrators must <code>bosh ssh</code> into each internal MySQL VM to connect as the MySQL super user. This affects the admin and roadmin accounts.</p>
+
 ## <a id='when'></a>When to Bootstrap
 
 You must bootstrap a cluster that loses quorum. A cluster loses quorum when less than half of the nodes can communicate with each other for longer than the configured grace period. If a cluster does not lose quorum, individual unhealthy nodes automatically rejoin the cluster after resolving the error, restarting the node, or restoring connectivity. 
