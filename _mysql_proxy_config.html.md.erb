@@ -1,4 +1,6 @@
-<p class="note"><strong>Note</strong>: You only need to configure this section if you have selected <strong>Internal Databases - MySQL</strong> in the <strong>Databases</strong> section.</p>
+You only need to configure this section if you have selected <strong>Internal Databases - MySQL</strong> in the <strong>Databases</strong> section.
+
+<p class="note"><strong>Note</strong>: By default, <code>mysql</code> clients are not allowed to connect as administrator to internal MySQL instances from remote hosts. Administrators must <code>bosh ssh</code> into each internal MySQL VM to connect as the MySQL super user. This affects the admin and roadmin accounts.</p>
 
 1. Select **Internal MySQL**. 
 
