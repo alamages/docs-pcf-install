@@ -14,8 +14,6 @@ Before beginning this procedure, ensure that you have successfully completed all
 steps in the [Provisioning the OpenStack Infrastructure](./openstack-setup.html)
 topic and the [Configuring Ops Manager Director after Deploying Pivotal Cloud Foundry on OpenStack](./openstack-om-config.html) topics.
 
-<p class="note"><b>Note</b>: If you are performing an upgrade to PCF 1.8, please review <a href="upgrading-pcf.html">Upgrading Pivotal Cloud Foundry</a> for critical upgrade information.</p>
-
 ## <a id='log-in'></a>Step 1: Add Elastic Runtime to Ops Manager ##
 
 1. If you have not already downloaded Elastic Runtime, log in to [Pivotal Network](https://network.pivotal.io/products/pivotal-cf), and click on **Pivotal Cloud Foundry Elastic Runtime**. 
@@ -118,7 +116,7 @@ Manager. For more information, refer to the [Adding and Deleting Products](./add
 1. <%= partial 'zipkin_enable' %>
 1. By default, the Elastic Runtime routers handle traffic for applications deployed to an isolation segment created by the PCF Isolation Segment tile. To configure the Elastic Runtime routers to reject requests for applications within isolation segments, select the **Routers reject requests for Isolation Segments** checkbox.
   <%= image_tag 'isolate-network.png' %>
-  Do not enable this option without deploying routers for each isolation segment. See the the following topics for more information:
+  Do not enable this option without deploying routers for each isolation segment. See the following topics for more information:
   * [Installing PCF Isolation Segment](../customizing/installing-pcf-is.html)
   * [Sharding Routers for Isolation Segments](../adminguide/routing-is.html#sharding-routers-isolation-segment)
 1. <%= partial 'xforwarded_client_cert_xfcc' %>
@@ -271,7 +269,7 @@ the cf CLI tool. See <a href="../adminguide/cli-user-management.html">Creating a
 
 ## <a id='floating-ips'></a>Step 20: Enable Traffic to Private Subnet ##
 
-Unless you are using your own load balancer, you must enable traffic flow to the OpenStack private subnet as follows. Give each HAProxy a way of routing traffic into the private subnet by providing public IPs as floating IPs.
+Unless you are using your own load balancer, you must enable traffic flow to the OpenStack private subnet as follows. Give each HAProxy a way of routing traffic into the private subnet by providing public IP addresses as floating IP addresses.
 
 1. Click **Resource Config**.
 
