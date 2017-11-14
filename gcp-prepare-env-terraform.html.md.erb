@@ -149,29 +149,31 @@ In your `terraform.tfvars` file, specify the appropriate variables from the sect
 
 If you want to change the CIDR ranges for the management, PAS, or services networks that Terraform creates, add the following variables to your `terraform.tfvars` file, replacing `YOUR-MANAGEMENT-CIDR`, `YOUR-PAS-CIDR` and `YOUR-SERVICES-CIDR` with your desired values.
 
-```
-management_cidr: YOUR-MANAGEMENT-CIDR
-pas_cidr: YOUR-PAS-CIDR
-services_cidr: YOUR-SERVICES-CIDR
-```
+  ```
+  management_cidr: YOUR-MANAGEMENT-CIDR
+  pas_cidr: YOUR-PAS-CIDR
+  services_cidr: YOUR-SERVICES-CIDR
+  ```
 
 ### <a id="iso_seg"></a> Isolation Segments
 
 If you plan to deploy the Isolation Segment tile, add the following variables to your `terraform.tfvars` file, replacing `YOUR-CERTIFICATE` and `YOUR-PRIVATE-KEY` with a certificate and private key. This causes terraform to create an additional HTTP load balancer across three availability zones to use for the Isolation Segment tile. 
 
-```
-isolation_segment: true
-iso_seg_ssl_cert = <<ISO_SEG_SSL_CERT
------BEGIN CERTIFICATE-----
-YOUR-CERTIFICATE
------END CERTIFICATE-----
-ISO_SEG_SSL_CERT
-iso_seg_ssl_cert_private_key = <<ISO_SEG_SSL_KEY
------BEGIN RSA PRIVATE KEY-----
-YOUR-PRIVATE-KEY
------END RSA PRIVATE KEY-----
-ISO_SEG_SSL_KEY
-```
+  ```
+  isolation_segment: true
+
+  iso_seg_ssl_cert = <<ISO_SEG_SSL_CERT
+  -----BEGIN CERTIFICATE-----
+  YOUR-CERTIFICATE
+  -----END CERTIFICATE-----
+  ISO_SEG_SSL_CERT
+
+  iso_seg_ssl_cert_private_key = <<ISO_SEG_SSL_KEY
+  -----BEGIN RSA PRIVATE KEY-----
+  YOUR-PRIVATE-KEY
+  -----END RSA PRIVATE KEY-----
+  ISO_SEG_SSL_KEY
+  ```
 
 ### <a id="cloudsql"></a> External Database
 
