@@ -29,7 +29,7 @@ this topic using the Ops Manager API. For more information, see the <a href="ops
 
 ### <a id='idp'></a>Use an Identity Provider (IdP) ###
 
-<%= partial 'using_idp_ops_manager' %> 
+<%= partial 'using_idp_ops_manager' %>
 
 ### <a id='internal'></a>Internal Authentication ###
 
@@ -57,25 +57,25 @@ this topic using the Ops Manager API. For more information, see the <a href="ops
     <%= image_tag("cloudform/aws-config.png") %>
 
 1. Select **Use AWS Keys** or **Use AWS Instance Profile**.
-    * If you choose to use AWS keys, complete the fields with information from 
-      the **[Outputs](./../customizing/aws-terraform-dns-config.html#outputs)** tab for your stack in the AWS Console:
-        * **Access Key ID**: Use the value of **PcfIamUserAccessKey**.
-        * **AWS Secret Key**: Use the value of **PcfIamUserSecretAccessKey**.
-    * If you choose to use an AWS instance profile, enter the name of your AWS 
+    * If you choose to use AWS keys, complete the fields with information from
+      the terraform outputs:
+        * **Access Key ID**: Use the value of `iam_user_access_key`.
+        * **AWS Secret Key**: Use the value of `iam_user_secret_access_key`.
+    * If you choose to use an AWS instance profile, enter the name of your AWS
       Identity and Access Management (IAM) profile.
 
 1. Complete the remainder of the **AWS Management Console Config** page with the following information.
-    * **VPC ID**: Use the value of **PcfVpc** from your **Outputs** tab.
-    * **Security Group ID**: Use the value of **PcfVmsSecurityGroup** from your **Outputs** tab. 
+    * **VPC ID**: Use the value of `vpc_id` from the terraform outputs.
+    * **Security Group ID**: Use the value of `vms_security_group_id` from the terraform outputs.
     * **Key Pair Name**: Use the name of your pre-existing AWS key pair.
-    * **SSH Private Key**: Open your AWS key pair `.pem` file in a 
-      text editor. Copy the contents of the `.pem` file and paste it into the 
+    * **SSH Private Key**: Open your AWS key pair `.pem` file in a
+      text editor. Copy the contents of the `.pem` file and paste it into the
       **SSH Private Key** field.
     * **Region**: Select the region where you deployed Ops Manager.
-    * **Encrypt EBS Volumes**: Select this checkbox to enable full encryption 
-      on persistent disks of all BOSH-deployed virtual machines (VMs), except 
-      for the Ops Manager VM and Director VM. See the [Configuring Amazon EBS 
-      Encryption for PCF on AWS](aws-terraform-om-ebs-config.html) topic for 
+    * **Encrypt EBS Volumes**: Select this checkbox to enable full encryption
+      on persistent disks of all BOSH-deployed virtual machines (VMs), except
+      for the Ops Manager VM and Director VM. See the [Configuring Amazon EBS
+      Encryption for PCF on AWS](aws-terraform-om-ebs-config.html) topic for
       details about using EBS encryption.
 
 1. Click **Save**.
@@ -91,7 +91,7 @@ delimited)** field, separated by a comma: `0.amazon.pool.ntp.org,1.amazon.pool.n
 
 1. (Optional) Enter your **JMX Provider IP Address** if you are [Using JMX Bridge](./../customizing/use-metrics.html).
 
-1. (Optional) Enter your **Bosh HM Forwarder IP Address** if you are using the BOSH HM Forwarder. 
+1. (Optional) Enter your **Bosh HM Forwarder IP Address** if you are using the BOSH HM Forwarder.
 
 1. Select the **Enable VM Resurrector Plugin** checkbox to enable the Ops
 Manager Resurrector functionality and increase Pivotal Application Service (PAS) availability.
@@ -102,7 +102,7 @@ Manager Resurrector functionality and increase Pivotal Application Service (PAS)
 
 1. Select **Enable bosh deploy retries** if you want Ops Manager to retry failed BOSH operations up to five times.
 
-1. Select **Keep Unreachable Director VMs** if you want to preserve Ops Manager Director VMs after a failed deployment for troubleshooting purposes. 
+1. Select **Keep Unreachable Director VMs** if you want to preserve Ops Manager Director VMs after a failed deployment for troubleshooting purposes.
 
 1. Select **HM Pager Duty Plugin** to enable Health Monitor integration with PagerDuty.
 
@@ -161,8 +161,8 @@ Manager Resurrector functionality and increase Pivotal Application Service (PAS)
 
 1. Use the following steps to create three Availability Zones for your apps to use:
     1. Click **Add** three times.
-    1. For **Amazon Availability Zone**, enter the values corresponding to the
-    key **management_subnet_availability_zones** from the terraform outputs..
+    1. Complete **Amazon Availability Zone** fields with the values of
+    **management_subnet_availability_zones** from the terraform outputs.
     1. Click **Save**.
 
 
