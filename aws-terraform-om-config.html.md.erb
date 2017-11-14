@@ -6,15 +6,18 @@ owner: Ops Manager
 <strong><%= modified_date %></strong>
 <html class="list-style-none"></html>
 
-This topic describes how to configure the Ops Manager Director after deploying the CloudFormation template for [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF) on Amazon 
+This topic describes how to configure the Ops Manager Director after deploying
+the Terraform template for [Pivotal Cloud Foundry](https://network.pivotal.io/products/pivotal-cf) (PCF) on Amazon
 Web Services (AWS).
+
 Use this topic after [Deploying BOSH and Ops Manager to AWS](./aws-terraform-template.html).
 
-<p class="note"><strong>Note</strong>: You can also perform the procedures in this topic using the Ops Manager API. For more information, see the <a href="ops-man-api.html">Using the Ops Manager API</a> topic.</p>
+<p class="note"><strong>Note</strong>: You can also perform the procedures in
+this topic using the Ops Manager API. For more information, see the <a href="ops-man-api.html">Using the Ops Manager API</a> topic.</p>
 
 ## <a id='access-om'></a>Step 1: Access Ops Manager ##
 
-<p class="note"><strong>Note</strong>: For security, Ops Manager 1.7 and later require that you log in using a fully qualified domain name.</a></p> 
+<p class="note"><strong>Note</strong>: For security, Ops Manager 1.7 and later require that you log in using a fully qualified domain name.</a></p>
 
 1. In a web browser, navigate to the fully qualified domain you created in _Configuring DNS for PCF on AWS_.
 
@@ -126,17 +129,17 @@ Manager Resurrector functionality and increase Pivotal Application Service (PAS)
     * In a browser, reference the [Amazon Simple Storage Service (Amazon S3) table](http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region), and find the region for your AWS account.
     * Prepend `https://` to the **Endpoint** for your region, and copy it into
     the Ops Manager **S3 Endpoint** field. For example, in the **us-west-2** region, enter `https://s3-us-west-2.amazonaws.com` into the field.
-    * Complete the following fields with information from the **Outputs** tab in the AWS Console:
-        * **Bucket Name**: Use the value of **PcfOpsManagerS3Bucket**.
-        * **Access Key ID**: Use the value of **PcfIamUserAccessKey**.
-        * **AWS Secret Key**: Use the value of **PcfIamUserSecretAccessKey**.
-    * Select **V2 Signature** or **V4 Signature**. If you select **V4 Signature**, enter your **Region**.
+    * Complete the following fields with information from the terraform outputs:
+        * **Bucket Name**: Use the value of `ops_manager_bucket`.
+        * **Access Key ID**: Use the value of `iam_user_access_key`.
+        * **AWS Secret Key**: Use the value of `iam_user_secret_access_key`.
+    * Select **V2 Signature** or **V4 Signature**. If you select **V4 Signature**, enter the value of `region`.
         * *AWS recommends using Signature Version 4 when possible.*
 
     <p class="note"><strong>Note</strong>: For more information about AWS S3 Signatures, see the AWS <a href="http://docs.aws.amazon.com/AmazonS3/latest/API/sig-v4-authenticating-requests.html">Authenticating Requests</a> documentation.</p>
 
 
-1. For **Database Location**, select **Internal**. 
+1. For **Database Location**, select **Internal**.
 
 1. (Optional) **Director Workers** sets the number of workers available to execute Director tasks. This field defaults to `5`.
 
