@@ -161,11 +161,9 @@ Manager Resurrector functionality and increase Pivotal Application Service (PAS)
 
 1. Use the following steps to create three Availability Zones for your apps to use:
     1. Click **Add** three times.
-    1. For **Amazon Availability Zone**, enter the values corresponding to these keys from the **Outputs** tab in the AWS Console. 
-        * **PcfManagementSubnetAZ1AvailabilityZone**
-        * **PcfManagementSubnetAZ2AvailabilityZone**
-        * **PcfManagementSubnetAZ3AvailabilityZone**
-    1. Click **Save**. 
+    1. For **Amazon Availability Zone**, enter the values corresponding to the
+    key **management_subnet_availability_zones** from the terraform outputs..
+    1. Click **Save**.
 
 
 ## <a id='om-networks'></a>Step 5: Create Networks Page ##
@@ -173,9 +171,12 @@ Manager Resurrector functionality and increase Pivotal Application Service (PAS)
 1. Select **Create Networks**.
 <%= image_tag("cloudform/create-networks.png") %>
 1. (Optional) Select **Enable ICMP checks** to enable ICMP on your networks. Ops Manager uses ICMP checks to confirm that components within your network are reachable.
+
 1. Perform the following steps to add the network configuration you created for your VPC in the [Step 4: Create a VPC](pcf-aws-manual-config.html#pcfaws-vpc) section of the <em>Manually Configuring PCF for AWS</em> topic:
     1. Click **Add Network**.
+
     1. For **Name**, enter `pcf-management-network`.
+
     1. Create a subnet for each availability zone by clicking **Add Subnet**. Refer to the table below for the information required to create all three subnets:
          <table>
          <tr>
@@ -187,33 +188,37 @@ Manager Resurrector functionality and increase Pivotal Application Service (PAS)
            <th>Availability Zones</th>
          </tr>
          <tr>
-           <td>The value of `PcfManagementSubnetAZ1` from the AWS outputs tab.</td>
+           <td>The first value of `management_subnet_ids` from the terraform outputs.</td>
            <td>`10.0.16.0/28`</td>
            <td>`10.0.16.0-10.0.16.4`</td>
            <td>`169.254.169.253`</td>
            <td>`10.0.16.1`</td>
-           <td>The value of `PcfManagementSubnetAZ1AvailabilityZone` from the AWS outputs tab. </td>
+           <td>The first value of `management_subnet_availability_zones` from the terraform outputs.</td>
          </tr>
          <tr>
-           <td>The value of `PcfManagementSubnetAZ2` from the AWS outputs tab.</td>
+           <td>The second value of `management_subnet_ids` from the terraform outputs.</td>
            <td>`10.0.16.16/28`</td>
            <td>`10.0.16.16-10.0.16.20`</td>
            <td>`169.254.169.253`</td>
            <td>`10.0.16.17`</td>
-           <td>The value of `PcfManagementSubnetAZ2AvailabilityZone` from the AWS outputs tab.</td>
+           <td>The second value of `management_subnet_availability_zones` from the terraform outputs.</td>
          </tr>
          <tr>
-           <td>The value of `PcfManagementSubnetAZ3` from the AWS outputs tab</td>
+           <td>The third value of `management_subnet_ids` from the terraform outputs.</td>
            <td>`10.0.16.32/28`</td>
            <td>`10.0.16.32-10.0.16.36`</td>
            <td>`169.254.169.253`</td>
            <td>`10.0.16.33`</td>
-           <td>The value of `PcfManagementSubnetAZ3AvailabilityZone` from the AWS outputs tab.</td>
+           <td>The third value of `management_subnet_availability_zones` from the terraform outputs.</td>
          </tr>
          </table>
+
     <br><br>
+
     1. Click **Add Network**.
+
     1. For **Name**, enter `pcf-ert-network`.
+
     1. Create a subnet for each availability zone by clicking **Add Subnet**. Refer to the table below for the information required to create all three subnets:
          <table>
           <tr>
@@ -225,34 +230,39 @@ Manager Resurrector functionality and increase Pivotal Application Service (PAS)
            <th>Availability Zones</th>
          </tr>
          <tr>
-           <td>The value of `PcfERTSubnetAZ1` from the AWS outputs tab.</td>
+           <td>The first value of `ert_subnet_ids` from the terraform outputs.</td>
            <td>`10.0.4.0/24`</td>
            <td>`10.0.4.0-10.0.4.4`</td>
            <td>`169.254.169.253`</td>
            <td>`10.0.4.1`</td>
-           <td>The value of `PcfERTSubnetAZ1AvailabilityZone` from the AWS outputs tab.</td>
+           <td>The first value of `ert_subnet_availability_zones` from the terraform outputs.</td>
          </tr>
          <tr>
-           <td>The value of `PcfERTSubnetAZ2` from the AWS outputs tab.</td>
+           <td>The second value of `ert_subnet_ids` from the terraform outputs.</td>
            <td>`10.0.5.0/24`</td>
            <td>`10.0.5.0-10.0.5.4`</td>
            <td>`169.254.169.253`</td>
            <td>`10.0.5.1`</td>
-           <td>The value of `PcfERTSubnetAZ2AvailabilityZone` from the AWS outputs tab.</td>
+           <td>The second value of `ert_subnet_availability_zones` from the terraform outputs.</td>
          </tr>
          <tr>
-           <td>The value of `PcfERTSubnetAZ3` from the AWS outputs tab.</td>
+           <td>The third value of `ert_subnet_ids` from the terraform outputs.</td>
            <td>`10.0.6.0/24`</td>
            <td>`10.0.6.0-10.0.6.4`</td>
            <td>`169.254.169.253`</td>
            <td>`10.0.6.1`</td>
-           <td>The value of `PcfERTSubnetAZ3AvailabilityZone` from the AWS outputs tab.</td>
+           <td>The third value of `ert_subnet_availability_zones` from the terraform outputs.</td>
          </tr>
          </table>
+
     <br><br>
+
     1. Click **Add Network**.
+
     1. Check the **Service Network** box. This allows you to dynamically provision VMs in this network for use with on-demand services. Ops Manager does not provision VMs within the specified CIDR range.
+
     1. Enter `pcf-services-network` in **Name** field.
+
     1. Create a subnet for each availability zone by clicking **Add Subnet**. Refer to the table below for the information required to create all three subnets:
           <table>
            <tr>
@@ -264,28 +274,28 @@ Manager Resurrector functionality and increase Pivotal Application Service (PAS)
              <th>Availability Zones</th>
            </tr>
            <tr>
-             <td>The value of `PcfServicesSubnetAZ1` from the AWS outputs tab.</td>
+             <td>The frst value of `services_subnet_ids` from the terraform outputs.</td>
              <td>`10.0.8.0/24`</td>
              <td>`10.0.8.0-10.0.8.3`</td>
              <td>`169.254.169.253`</td>
              <td>`10.0.8.1`</td>
-             <td>The value of `PcfServicesSubnetAZ1AvailabilityZone` from the AWS outputs tab.</td>
+             <td>The frst value of `services_subnet_availability_zones` from the terraform outputs.</td>
            </tr>
            <tr>
-             <td>The value of `PcfServicesSubnetAZ2` from the AWS outputs tab.</td>
+             <td>The second value of `services_subnet_ids` from the terraform outputs.</td>
              <td>`10.0.9.0/24`</td>
              <td>`10.0.9.0-10.0.9.3`</td>
              <td>`169.254.169.253`</td>
              <td>`10.0.9.1`</td>
-             <td>The value of `PcfServicesSubnetAZ2AvailabilityZone` from the AWS outputs tab.</td>
+             <td>The second value of `services_subnet_availability_zones` from the terraform outputs.</td>
            </tr>
            <tr>
-             <td>The value of `PcfServicesSubnetAZ3` from the AWS outputs tab.</td>
+             <td>The third value of `services_subnet_ids` from the terraform outputs.</td>
              <td>`10.0.10.0/24`</td>
              <td>`10.0.10.0-10.0.10.3`</td>
              <td>`169.254.169.253`</td>
              <td>`10.0.10.1`</td>
-             <td>The value of `PcfServicesSubnetAZ3AvailabilityZone` from the AWS outputs tab.</td>
+             <td>The third value of `services_subnet_availability_zones` from the terraform outputs.</td>
            </tr>
            </table>
 
@@ -307,7 +317,9 @@ Manager Resurrector functionality and increase Pivotal Application Service (PAS)
     <%= image_tag("../images/om-security.png") %>
 
 1. In **Trusted Certificates**, enter a custom certificate authority (CA) certificate to insert into your organization's certificate trust chain. This feature enables all BOSH-deployed components in your deployment to trust a custom root certificate. If you want to use Docker Registries for running app instances in Docker containers, use this field to enter your certificate for your private Docker Registry. See the [Using Docker Registries](../opsguide/docker-registry.html) topic for more information.
+
 1. Choose **Generate passwords** or **Use default BOSH password**. Pivotal recommends that you use the **Generate passwords** option for greater security.
+
 1. Click **Save**. To view your saved Director password, click the **Credentials** tab.
 
 ## <a id='syslog'></a>Step 8: Syslog Page
@@ -338,4 +350,4 @@ Dashboard.
 
     <%= image_tag("cloudform/ops-manager-complete.png") %>
 
-1. After you complete this procedure, follow the instructions in the [Deploying PAS on AWS CloudFormation](./aws-terraform-pas-config.html) topic.
+1. After you complete this procedure, follow the instructions in the [Deploying PAS on AWS Terraform](./aws-terraform-pas-config.html) topic.
