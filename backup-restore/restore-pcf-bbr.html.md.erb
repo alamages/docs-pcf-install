@@ -19,7 +19,7 @@ The procedures described in this topic prepare your environment for PCF, deploy 
 
 <p class="note"><strong>Note</strong>: BBR is a feature in PCF v1.11. You can only use BBR to back up PCF v1.11 and later. To restore earlier versions of PCF, perform the manual procedure documented for your specific PCF version.</p>
 
-<p class="note"><strong>Note</strong>: If the BOSH Director you are restoring had any deployments that were deployed manually rather than through an Ops Manager Tile, you must restore them manually at the end of the process. For more information, see <a href="#non-tiles">(Optional) Step 14: Restore Non-Tile Deployments</a>.</p>
+<p class="note"><strong>Note</strong>: If the BOSH Director you are restoring had any deployments that were deployed manually rather than through an Ops Manager Tile, you must restore them manually at the end of the process. For more information, see <a href="#non-tiles">(Optional) Step 15: Restore Non-Tile Deployments</a>.</p>
 
 <p class="note validation"><strong>Note</strong>: If you are restoring in order to validate a backup, look for notes marked <strong>Validation</strong> throughout the topic.</p>
 
@@ -137,21 +137,24 @@ If you recreated IaaS resources such as networks and load balancers by following
 Perform the steps in the [Applying Changes to BOSH Director](../deploy-ops-man-director.html) topic to use the Ops Manager API to only deploy the BOSH Director.
 <p class="note"><strong>Validation</strong>: If your BOSH Director has an external hostname, you should change it in **BOSH Director > Director Config > Director Hostname** to ensure it does not conflict with the hostname of the backed up Director.</p>
 
-## <a id="artifacts-jumpbox"></a> Step 6: Transfer Artifacts to Jumpbox
+## <a id='setup-jumpbox'></a> Step 6: Set Up Your Jumpbox
+
+Prepare your jumpbox for BBR by following the steps in the [Setting Up Your Jumpbox for BBR](system-setup-bbr.html) topic.
+
+## <a id="artifacts-jumpbox"></a> Step 7: Transfer Artifacts to Jumpbox
 
 In the [Step 9: Back Up Your PAS Deployment](./backup-pcf-bbr.html#bbr-backup) section of the <em>Backing Up Pivotal Cloud Foundry with BBR</em> topic, in the <em>After Taking the Backups</em> section you moved the TAR and metadata files of the backup artifacts off your jumpbox to your preferred storage space. Now you must transfer those files back to your jumpbox.
 
 For instance, you could SCP the backup artifact to your jumpbox:
   <pre class="terminal">$ scp LOCAL-PATH-TO-BACKUP-ARTIFACT JUMPBOX-USER/JUMPBOX-ADDRESS</pre>
 
-## <a id="retrieve"></a> Step 7: Retrieve BOSH Director Address and Credentials
+## <a id="retrieve"></a> Step 8: Retrieve BOSH Director Address and Credentials
 
 Perform the following steps to retrieve the IP address of your BOSH Director and the credentials for logging in from the BOSH Director tile:
 
 <%= partial 'bosh_target_director_bbr' %>
 
-
-## <a id='restore-bosh'></a> Step 8: Restore the BOSH Director
+## <a id='restore-bosh'></a> Step 9: Restore the BOSH Director
 
 1. Navigate to the Ops Manager Installation Dashboard.
 1. Click the Ops Manager tile.
@@ -181,11 +184,11 @@ Perform the following steps to retrieve the IP address of your BOSH Director and
   Replace the placeholder values as follows:
   * `PATH-TO-DIRECTOR-BACKUP`: This is the path to the Director backup you want to restore.
   * `PRIVATE-KEY`: This is the path to the private key file you created above.
-  * `HOST`: This is the address of the BOSH Director. If the BOSH Director is public, this is a URL, such as `https://my-bosh.xxx.cf-app.com`. Otherwise, it is the `BOSH-DIRECTOR-IP`, which you retrieved in the [Step 6: Retrieve BOSH Director Address and Credentials](#retrieve) section.
+  * `HOST`: This is the address of the BOSH Director. If the BOSH Director is public, this is a URL, such as `https://my-bosh.xxx.cf-app.com`. Otherwise, it is the `BOSH-DIRECTOR-IP`, which you retrieved in the [Step 8: Retrieve BOSH Director Address and Credentials](#retrieve) section.
 
 <p class="note"><strong>Note</strong>: The BBR BOSH Director restore command can take at least 15 minutes to complete. Pivotal recommends that you run it independently of the SSH session, so that the process can continue running even if your connection to the jumpbox fails. The command above uses <code>nohup</code> but you could also run the command in a <code>screen</code> or <code>tmux</code> session.</p>
 
-If the commands completes successfully, continue to [Step 9: Identify Your Deployment](#identify-deployment).
+If the commands completes successfully, continue to [Step 10: Identify Your Deployment](#identify-deployment).
 
 If the command fails, do the following:
 
@@ -204,7 +207,7 @@ $ bbr director \
 1. Ensure the source deployment is compatible with the target deployment.
 1. Ensure that the jumpbox can reach the BOSH Director.
 
-## <a id='identify-deployment'></a> Step 9: Identify Your Deployment
+## <a id='identify-deployment'></a> Step 10: Identify Your Deployment
 
 After logging in to your BOSH Director, run `bosh deployments` to identify the name of the BOSH deployment that contains PCF:
 
@@ -223,7 +226,7 @@ cf-example               push-apps-manager-release/661.1.24
 
 In the above example, the name of the BOSH deployment that contains PCF is `cf-example`. `PATH-TO-BOSH-SERVER-CERTIFICATE` is the path to the Certificate Authority (CA) certificate for the BOSH Director. For more information, see [Ensure BOSH Director Certificate Availability](./system-setup-bbr.html#root-ca-cert).
 
-## <a id="bosh-cck"></a> Step 10: Remove Stale Cloud IDs for All Deployments
+## <a id="bosh-cck"></a> Step 11: Remove Stale Cloud IDs for All Deployments
 
 For every deployment in the BOSH Director, run the following command:
 
@@ -233,14 +236,14 @@ $ bosh -e DIRECTOR-IP -d DEPLOYMENT-NAME -n cck \
   --resolution delete_vm_reference
 </pre>
 
-This reconciles the BOSH Director's internal state with the state in the IaaS. You can use the list of deployments returned in [Step 9: Identify Your Deployment](#identify-deployment).
+This reconciles the BOSH Director's internal state with the state in the IaaS. You can use the list of deployments returned in [Step 10: Identify Your Deployment](#identify-deployment).
 
 If the <code>bosh cloud-check</code> command does not successfully delete disk references and you see a message similar to the following, perform the additional procedures in the <a href="#removing-disks">Remove Unused Disks</a> section below.
 <pre class="terminal">
 Scanning 19 persistent disks: 19 OK, 0 missing ...
 </pre>
 
-## <a id='redeploy-ert'></a> Step 11: Redeploy PAS
+## <a id='redeploy-ert'></a> Step 12: Redeploy PAS
 
 1. Perform the following steps to determine which stemcell is used by PAS:
   1. Navigate to **Manage Stemcells** from the **Installation Dashboard**
@@ -276,7 +279,7 @@ Scanning 19 persistent disks: 19 OK, 0 missing ...
   <p class="note validation"><strong>Validation</strong>: Ensure your **System Domain** and **Apps Domain** under PAS **Domains** are updated to refer to the validation environment.
   </p>
 
-## <a id='restore-ert'></a> Step 12: Restore PAS
+## <a id='restore-ert'></a> Step 13: Restore PAS
 
 <p class="note validation"><strong>Validation</strong>: If your apps must not be running after a restore run <code>bosh stop</code> on each <code>diego_cell</code> VM in the deployment.</p>
 
@@ -299,8 +302,8 @@ $ BOSH_CLIENT_SECRET=BOSH-PASSWORD \
     * `BOSH-CLIENT`, `BOSH-PASSWORD`: Use the BOSH UAA user provided in  **Pivotal Ops Manager > Credentials > Uaa Bbr Client Credentials**.
     <br><br>
        You can also retrieve the credentials using the Ops Manager API with a GET request to the following endpoint: `/api/v0/deployed/director/credentials/uaa_bbr_client_credentials`. For more information, see the [Using the Ops Manager API](../ops-man-api.html) topic.<br><br>
-    * `BOSH-DIRECTOR-IP`: You retrieved this value in the [Step 6: Retrieve BOSH Director Address and Credentials](#retrieve) section.
-    * `DEPLOYMENT-NAME`: You retrieved this value in the [Step 8: Identify Your Deployment](#identify-deployment) section.
+    * `BOSH-DIRECTOR-IP`: You retrieved this value in the [Step 8: Retrieve BOSH Director Address and Credentials](#retrieve) section.
+    * `DEPLOYMENT-NAME`: You retrieved this value in the [Step 10: Identify Your Deployment](#identify-deployment) section.
     * `PATH-TO-BOSH-SERVER-CERTIFICATE`: This is the path to the BOSH Director’s Certificate Authority (CA) certificate, if the certificate is not verifiable by the local machine’s certificate chain.
     * `PATH-TO-PAS-BACKUP`: This is the path to the PAS backup you want to restore.
 
@@ -310,7 +313,7 @@ $ BOSH_CLIENT_SECRET=BOSH-PASSWORD \
 
 1. If desired, scale the MySQL Server job back up to its previous number of instances by navigating to the **Resource Config** section of the PAS tile. After scaling the job, return to the Ops Manager Installation Dashboard and click **Apply Changes** to deploy.
 
-##<a id='odb'></a> (Optional) Step 13: Restore On-Demand Service Instances
+##<a id='odb'></a> (Optional) Step 14: Restore On-Demand Service Instances
 
 <p class="note"><strong>Note</strong>: These procedures restore the on-demand service instances but do not restore service instance data.</p>
 
@@ -383,7 +386,7 @@ If you have on-demand service instances provisioned by an on-demand service brok
   </pre>
 1. Any PAS apps bound to these services will have to be restarted to pick up the recreated service instances.
 
-## <a id='non-tiles'></a> (Optional) Step 14: Restore Non-Tile Deployments
+## <a id='non-tiles'></a> (Optional) Step 15: Restore Non-Tile Deployments
 
 If you have any deployments that were deployed manually with the BOSH Director rather than through an Ops Manager Tile, perform the following steps to restore the VMs.
 
@@ -418,7 +421,7 @@ If `bosh cloud-check` does not clean up all disk references, you must manually d
 To delete the disks, perform one of the following procedures:
 
 * Use the BOSH CLI to delete the disks by performing the following steps:
-  1. Target the redeployed BOSH Director using the BOSH CLI by performing the procedures in [Step 6: Retrieve BOSH Director Address and Credentials](#retrieve).
+  1. Target the redeployed BOSH Director using the BOSH CLI by performing the procedures in [Step 8: Retrieve BOSH Director Address and Credentials](#retrieve).
   1. List the deployments by running the following command:
     <pre class="terminal">
     $ bosh -e DIRECTOR-IP \
@@ -434,4 +437,4 @@ To delete the disks, perform one of the following procedures:
   --ca-cert PATH-TO-BOSH-SERVER-CERTIFICATE instances
   </pre>
 
-Once the disks are deleted, continue with [Step 9: Remove Stale Cloud IDs for All Deployments](#bosh-cck).
+Once the disks are deleted, continue with [Step 11: Remove Stale Cloud IDs for All Deployments](#bosh-cck).
