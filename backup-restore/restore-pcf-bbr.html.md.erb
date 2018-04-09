@@ -147,8 +147,10 @@ Prepare your jumpbox for BBR by following the steps in the [Setting Up Your Jump
 
 In the [Step 9: Back Up Your PAS Deployment](./backup-pcf-bbr.html#bbr-backup) section of the <em>Backing Up Pivotal Cloud Foundry with BBR</em> topic, in the <em>After Taking the Backups</em> section you moved the TAR and metadata files of the backup artifacts off your jumpbox to your preferred storage space. Now you must transfer those files back to your jumpbox.
 
-For instance, you could SCP the backup artifact to your jumpbox:
-  <pre class="terminal">$ scp LOCAL-PATH-TO-BACKUP-ARTIFACT JUMPBOX-USER/JUMPBOX-ADDRESS</pre>
+For instance, you could use `rsync` to securely copy the backup artifact to your jumpbox:
+<pre class="terminal">
+$ rsync -Pv -e "ssh -i LOCAL-PATH-TO-JUMPBOX-PRIVATE-KEY" LOCAL-PATH-TO-BACKUP-ARTIFACT JUMPBOX-USER@JUMPBOX-ADDRESS:
+</pre>
 
 ## <a id="retrieve"></a> Step 8: Retrieve BOSH Director Address and Credentials
 
